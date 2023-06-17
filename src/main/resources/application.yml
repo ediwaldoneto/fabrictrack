@@ -1,0 +1,13 @@
+spring:
+    application:
+       name: product
+    profiles:
+       active: local,default
+datasource:
+    url: jdbc:mysql://localhost:3306/fabric
+    driver_class_name: com.mysql.cj.jdbc.Driver
+    pool_name: fabric
+    connection_timeout: 60000
+    max_pool_size: 3
+datasource_username: 'root'
+datasource_password: 'root'
