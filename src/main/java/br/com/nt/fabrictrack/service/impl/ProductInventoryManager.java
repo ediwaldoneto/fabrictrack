@@ -47,8 +47,11 @@ public class ProductInventoryManager {
 	return list.stream().map(Product::convertEntity).collect(Collectors.toList());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public ProductDTO findByIdProduct(final Long id) {
-	log.info("Product not found in database {}", id);
 	Product product = productService.findById(id);
 	return product.convertEntity();
 

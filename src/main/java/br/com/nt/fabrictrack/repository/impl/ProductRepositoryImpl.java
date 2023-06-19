@@ -27,7 +27,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findById(Long id) {
-	final String sql = "SELECT * FROM produto WHERE :id";
+	final String sql = "SELECT * FROM produto WHERE id = :id";
 	MapSqlParameterSource source = new MapSqlParameterSource();
 	source.addValue("id", id);
 	return jdbcTemplate.queryForObject(sql, source, mapper());
@@ -50,14 +50,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void delete(Long id) {
-	
-
 
     }
 
     @Override
     public void update(Long id) {
-	
 
     }
 
