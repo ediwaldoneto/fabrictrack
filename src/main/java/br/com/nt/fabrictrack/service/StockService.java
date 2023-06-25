@@ -13,11 +13,11 @@ import br.com.nt.fabrictrack.model.Stock;
  */
 public interface StockService {
 
-    public void save(Stock stock);
+    public void save(final Stock stock);
 
     public void finById(final Long id);
 
     public List<Stock> findALl();
 
-    public void update(Stock stock);
+    public void update(final Stock stock);
 }

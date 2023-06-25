@@ -3,12 +3,15 @@
  */
 package br.com.nt.fabrictrack.repository.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import br.com.nt.fabrictrack.model.Product;
@@ -40,11 +43,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void save(Product product) {
-	final String sql = " INSERT INTO produto (nome, descricao, marca, categoria, tamanho, cor, material, valor) "
-		+ " VALUES (:name, :description, :brand, :category, :size, :color, :material, :productValue)";
+    public Long save(Product product) {
+	final String sql = " INSERT INTO produto (id, nome, descricao, marca, categoria, tamanho, cor, material, valor) "
+		+ " VALUES (:id, :name, :description, :brand, :category, :size, :color, :material, :productValue)";
+	final Long id = recoverSequence();
 	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(product);
+	source.addValue("id", id);
 	jdbcTemplate.update(sql, source);
+	return id;
 
     }
 
@@ -72,5 +78,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 	    product.setProductValue(rs.getBigDecimal("valor"));
 	    return product;
 	};
+    }
+
+    @Override
+    public Long recoverSequence() {
+	final String sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'fabric' AND TABLE_NAME = 'produto'";
+	return jdbcTemplate.queryForObject(sql, new HashMap<>(), Long.class);
     }
 }

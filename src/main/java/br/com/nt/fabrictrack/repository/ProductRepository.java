@@ -17,9 +17,11 @@ public interface ProductRepository {
 
     public List<Product> findAll();
 
-    public void save(final Product product);
+    public Long save(final Product product);
 
     public void delete(final Long id);
 
     public void update(final Long id);
+
+    public Long recoverSequence();
 }

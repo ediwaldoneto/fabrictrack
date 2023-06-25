@@ -3,6 +3,7 @@
  */
 package br.com.nt.fabrictrack.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.model.dto.ProductDTO;
+import br.com.nt.fabrictrack.model.dto.ProductStockDTO;
 
 /**
  * @author Neto
@@ -33,9 +35,17 @@ public class ProductInventoryManager {
     /**
      * @param dto
      */
-    public void registerProduct(final ProductDTO dto) {
-	log.info("registering product");
-	productService.save(dto.convertEntity());
+    public void registerProductStock(final ProductStockDTO dto) {
+	log.info("product registration in the database");
+
+	final long idProduct = productService.save(dto.convertEntityProduct());
+
+	final Stock stock = new Stock();
+	stock.setIdProduct(idProduct);
+	stock.setStockLocation(dto.getStockLocation());
+	stock.setAmount(dto.getAmount());
+	stock.setDateRegister(new Date());
+	registerStock(stock);
     }
 
     /**
@@ -54,14 +64,13 @@ public class ProductInventoryManager {
     public ProductDTO findByIdProduct(final Long id) {
 	Product product = productService.findById(id);
 	return product.convertEntity();
-
     }
 
     /**
      * @param stock
      */
     public void registerStock(final Stock stock) {
-	log.info("registering product");
+	log.info("saving stock for the product");
 	stockService.save(stock);
     }
 }

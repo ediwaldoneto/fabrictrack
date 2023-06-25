@@ -8,9 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.nt.fabrictrack.exception.ProductNotFoundException;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.repository.impl.ProductRepositoryImpl;
 import br.com.nt.fabrictrack.service.ProductService;
+import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -29,7 +31,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-	return repository.findById(id);
+	try {
+	    return repository.findById(id);
+	} catch (Exception e) {
+	    throw new ProductNotFoundException(Constants.PRODUCT_NOT_FOUND);
+	}
     }
 
     @Override
@@ -43,8 +49,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(Product product) {
-	repository.save(product);
+    public Long save(Product product) {
+	return repository.save(product);
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.model.Seller;
 import br.com.nt.fabrictrack.repository.SellerRepository;
 import br.com.nt.fabrictrack.util.Constants;
@@ -45,7 +46,7 @@ public class SellerRepositoryImpl implements SellerRepository {
     }
 
     @Override
-    public Seller findSeller(String user) {
+    public Seller findSeller(String user) throws SellerNotFoundException {
 	final String sql = "SELECT * FROM vendedor WHERE user_name = :user";
 	MapSqlParameterSource params = new MapSqlParameterSource();
 	params.addValue(Constants.NAME_FIELD, user);
@@ -53,14 +54,14 @@ public class SellerRepositoryImpl implements SellerRepository {
     }
 
     @Override
-    public Seller findSeller(Long id) {
+    public Seller findSeller(Long id) throws SellerNotFoundException {
 	final String sql = "SELECT * FROM vendedor WHERE id = :id";
 	MapSqlParameterSource params = new MapSqlParameterSource();
 	params.addValue(Constants.ID_FIELD, id);
 	try {
 	    return jdbcTemplate.queryForObject(sql, params, rowMapper());
 	} catch (Exception e) {
-	    return null;
+	    throw new SellerNotFoundException(Constants.SELLER_NOT_FOUND);
 	}
     }
 

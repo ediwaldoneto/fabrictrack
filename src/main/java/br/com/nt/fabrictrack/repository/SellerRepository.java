@@ -3,6 +3,7 @@
  */
 package br.com.nt.fabrictrack.repository;
 
+import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.model.Seller;
 
 /**
@@ -15,7 +16,7 @@ public interface SellerRepository {
 
     public void update(final Seller seller);
 
-    public Seller findSeller(final String user);
+    public Seller findSeller(final String user) throws SellerNotFoundException;
 
-    public Seller findSeller(final Long id);
+    public Seller findSeller(final Long id)throws SellerNotFoundException;
 }

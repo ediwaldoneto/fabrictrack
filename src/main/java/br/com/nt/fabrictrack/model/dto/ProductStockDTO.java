@@ -4,6 +4,7 @@
 package br.com.nt.fabrictrack.model.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,12 +12,13 @@ import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 
 import br.com.nt.fabrictrack.model.Product;
+import br.com.nt.fabrictrack.model.Stock;
 
 /**
  * @author Neto
  *
  */
-public class ProductDTO {
+public class ProductStockDTO {
 
     private Long id;
     @NotNull(message = "name cannot be null")
@@ -34,22 +36,14 @@ public class ProductDTO {
     private String material;
     @NotNull(message = "productValue cannot be null")
     private BigDecimal productValue;
+
+    private Long idStock;
+    private Long idProduct;
+    @NotNull(message = "amount cannot be null")
+    private int amount;
+    private Date dateRegister;
     @NotBlank(message = "stockLocation cannot be null")
     private String stockLocation;
-
-    /**
-     * @return the stockLocation
-     */
-    public String getStockLocation() {
-	return stockLocation;
-    }
-
-    /**
-     * @param stockLocation the stockLocation to set
-     */
-    public void setStockLocation(String stockLocation) {
-	this.stockLocation = stockLocation;
-    }
 
     /**
      * @return the id
@@ -177,7 +171,84 @@ public class ProductDTO {
 	this.productValue = productValue;
     }
 
-    public Product convertEntity() {
+    /**
+     * @return the idStock
+     */
+    public Long getIdStock() {
+	return idStock;
+    }
+
+    /**
+     * @param idStock the idStock to set
+     */
+    public void setIdStock(Long idStock) {
+	this.idStock = idStock;
+    }
+
+    /**
+     * @return the idProduct
+     */
+    public Long getIdProduct() {
+	return idProduct;
+    }
+
+    /**
+     * @param idProduct the idProduct to set
+     */
+    public void setIdProduct(Long idProduct) {
+	this.idProduct = idProduct;
+    }
+
+    /**
+     * @return the amount
+     */
+    public int getAmount() {
+	return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(int amount) {
+	this.amount = amount;
+    }
+
+    /**
+     * @return the dateRegister
+     */
+    public Date getDateRegister() {
+	return dateRegister;
+    }
+
+    /**
+     * @param dateRegister the dateRegister to set
+     */
+    public void setDateRegister(Date dateRegister) {
+	this.dateRegister = dateRegister;
+    }
+
+    /**
+     * @return the stockLocation
+     */
+    public String getStockLocation() {
+	return stockLocation;
+    }
+
+    /**
+     * @param stockLocation the stockLocation to set
+     */
+    public void setStockLocation(String stockLocation) {
+	this.stockLocation = stockLocation;
+    }
+
+    /**
+     * @return
+     */
+    public Product convertEntityProduct() {
 	return new ModelMapper().map(this, Product.class);
+    }
+
+    public Stock convertEntityStock() {
+	return new ModelMapper().map(this, Stock.class);
     }
 }

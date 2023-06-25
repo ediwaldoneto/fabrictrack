@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.ValidateExceptionData;
 import br.com.nt.fabrictrack.model.Client;
 import br.com.nt.fabrictrack.repository.impl.ClientRepositoryImpl;
@@ -29,12 +30,12 @@ public class ClientServiceImpl implements ClientService {
     private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
 
     @Override
-    public Client findByCpfRg(String cpf, String rg) {
+    public Client findByCpfRg(String cpf, String rg) throws ClientNotFoundException {
 	return repositoryImpl.findByCpfRg(cpf, rg);
     }
 
     @Override
-    public List<Client> findName(String name) {
+    public List<Client> findName(String name) throws ClientNotFoundException  {
 	return repositoryImpl.findByName(name);
     }
 

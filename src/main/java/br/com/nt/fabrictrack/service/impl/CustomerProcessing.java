@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.model.Client;
 import br.com.nt.fabrictrack.model.dto.ClientDTO;
-import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -49,10 +48,6 @@ public class CustomerProcessing {
      */
     public ClientDTO findClientCpfRg(final String cpf, final String rg) throws ClientNotFoundException {
 	Client client = service.findByCpfRg(cpf, rg);
-	if (client == null) {
-	    log.info(Constants.CLIENT_NOT_FOUND);
-	    throw new ClientNotFoundException(Constants.CLIENT_NOT_FOUND);
-	}
 	return client.convertEntity();
     }
 
@@ -63,10 +58,6 @@ public class CustomerProcessing {
      */
     public List<ClientDTO> findClientName(final String name) throws ClientNotFoundException {
 	List<Client> clients = service.findName(name);
-	if (clients.isEmpty()) {
-	    log.info(Constants.CLIENT_NOT_FOUND);
-	    throw new ClientNotFoundException(Constants.CLIENT_NOT_FOUND);
-	}
 	List<ClientDTO> dtos = new ArrayList<>();
 	clients.stream().forEach(t -> dtos.add(t.convertEntity()));
 	return dtos;

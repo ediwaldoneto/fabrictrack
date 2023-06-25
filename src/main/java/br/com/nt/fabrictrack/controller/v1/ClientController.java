@@ -51,11 +51,11 @@ public class ClientController {
 	try {
 	    customerProcessing.registerClient(dto);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	    
+
 	} catch (ValidateExceptionData e) {
 	    response.addErrorMsgResponse(e.getMessage());
-	    return ResponseEntity.badRequest().body(response);
-	    
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
 	} catch (Exception e) {
 	    log.error(e.getMessage());
 	    response.addErrorMsgResponse(e.getMessage());
@@ -72,11 +72,12 @@ public class ClientController {
 	    ClientDTO dto = customerProcessing.findClientCpfRg(cpf, rg);
 	    response.setData(dto);
 	    return ResponseEntity.ok(response);
-	    
+
 	} catch (ClientNotFoundException e) {
 	    log.error(e.getMessage());
-	    return ResponseEntity.notFound().build();
-	    
+	    response.addErrorMsgResponse(e.getMessage());
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
 	} catch (Exception e) {
 	    log.error(e.getMessage());
 	    response.addErrorMsgResponse(e.getMessage());
@@ -92,11 +93,12 @@ public class ClientController {
 	    List<ClientDTO> dto = customerProcessing.findClientName(name);
 	    response.setData(dto);
 	    return ResponseEntity.ok(response);
-	    
+
 	} catch (ClientNotFoundException e) {
 	    log.info(e.getMessage());
-	    return ResponseEntity.notFound().build();
-	    
+	    response.addErrorMsgResponse(e.getMessage());
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
 	} catch (Exception e) {
 	    log.error(e.getMessage());
 	    response.addErrorMsgResponse(e.getMessage());

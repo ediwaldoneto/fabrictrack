@@ -3,18 +3,18 @@
  */
 package br.com.nt.fabrictrack.repository.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.model.Client;
 import br.com.nt.fabrictrack.repository.ClientRepository;
+import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -38,15 +38,11 @@ public class ClientRepositoryImpl implements ClientRepository {
 	MapSqlParameterSource source = new MapSqlParameterSource();
 	source.addValue("name", "%" + name + "%");
 
-	try {
-	    return jdbcTemplate.query(sql, source, rowMapper());
-	} catch (EmptyResultDataAccessException e) {
-	   return new ArrayList<>();
-	}
+	return jdbcTemplate.query(sql, source, rowMapper());
     }
 
     @Override
-    public Client findByCpfRg(String cpf, String rg) {
+    public Client findByCpfRg(String cpf, String rg) throws ClientNotFoundException {
 	final String sql = "SELECT id, nome, cpf, rg, endereco, idade, email, telefone, sexo, estado_civil, data_nascimento FROM cliente "
 		+ " WHERE cpf = :cpf OR rg = :rg";
 	MapSqlParameterSource source = new MapSqlParameterSource();
@@ -54,8 +50,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 	source.addValue("rg", rg);
 	try {
 	    return jdbcTemplate.queryForObject(sql, source, rowMapper());
-	} catch (EmptyResultDataAccessException e) {
-	    return null;
+	} catch (Exception e) {
+	    throw new ClientNotFoundException(Constants.CLIENT_NOT_FOUND);
 	}
     }
 

@@ -21,5 +21,5 @@ public interface ProductService {
 
     public void delete(final Long id);
 
-    public void save(final Product product);
+    public Long save(final Product product);
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.model.Seller;
 import br.com.nt.fabrictrack.model.dto.SellerDTO;
-import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -22,10 +21,9 @@ public class SellerProcessing {
 
     @Autowired
     private SellerServiceImpl service;
-    
+
     private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
 
-    
     /**
      * @param dto
      */
@@ -37,14 +35,11 @@ public class SellerProcessing {
     /**
      * @param id
      * @return
-     * @throws SellerNotFoundException 
+     * @throws SellerNotFoundException
      */
     public SellerDTO findBySellerCode(final Long id) throws SellerNotFoundException {
 	log.info("searching seller in the database {}", id);
 	Seller seller = service.findSeller(id);
-	if (seller == null) {
-	    throw new SellerNotFoundException(Constants.SELLER_NOT_FOUND);
-	}
 	return seller.convertyEntity();
     }
 }

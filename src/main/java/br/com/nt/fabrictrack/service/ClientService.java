@@ -14,9 +14,9 @@ import br.com.nt.fabrictrack.model.Client;
  */
 public interface ClientService {
 
-    public Client findByCpfRg(final String cpf, final String rg) throws ClientNotFoundException;
+    public Client findByCpfRg(final String cpf, final String rg)throws ClientNotFoundException;
 
-    public List<Client> findName(final String name);
+    public List<Client> findName(final String name)throws ClientNotFoundException;
 
     public void save(final Client client);
 
