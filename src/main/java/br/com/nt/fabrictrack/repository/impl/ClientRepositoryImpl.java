@@ -128,4 +128,16 @@ public class ClientRepositoryImpl implements ClientRepository {
 
 	return jdbcTemplate.queryForObject(sql, params, Integer.class) > 0;
     }
+
+    @Override
+    public Long checkClientExists(Long id) throws ClientNotFoundException {
+	String sql = "SELECT id FROM cliente WHERE id = :id";
+	MapSqlParameterSource params = new MapSqlParameterSource();
+	params.addValue("id", id);
+	try {
+	    return jdbcTemplate.queryForObject(sql, params, Long.class);
+	} catch (Exception e) {
+	    throw new ClientNotFoundException(Constants.CLIENT_NOT_FOUND);
+	}
+    }
 }

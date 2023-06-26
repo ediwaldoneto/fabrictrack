@@ -75,4 +75,15 @@ public class SellerRepositoryImpl implements SellerRepository {
 	};
     }
 
+    @Override
+    public Long checkSellerExists(Long id) throws SellerNotFoundException {
+	String sql = "SELECT id vendedor WHERE id = :id";
+	MapSqlParameterSource params = new MapSqlParameterSource();
+	try {
+	    return jdbcTemplate.queryForObject(sql, params, Long.class);
+	} catch (Exception e) {
+	    throw new SellerNotFoundException(Constants.SELLER_NOT_FOUND);
+	}
+    }
+
 }

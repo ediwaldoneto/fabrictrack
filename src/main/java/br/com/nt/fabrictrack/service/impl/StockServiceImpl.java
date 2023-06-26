@@ -42,7 +42,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public void update(Stock stock) {
-	// TODO Auto-generated method stub
+	repository.update(stock);
 
     }
 

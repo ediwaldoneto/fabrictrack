@@ -19,4 +19,6 @@ public interface SellerService {
     public Seller findSeller(final String user) throws SellerNotFoundException;
 
     public Seller findSeller(final Long id) throws SellerNotFoundException;
+    
+    public Long checkSellerExists(final Long id)throws SellerNotFoundException;
 }

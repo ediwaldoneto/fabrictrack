@@ -34,7 +34,11 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public void update(Stock stock) {
-
+	final String sql = "UPDATE estoque SET quantidade = :amount WHERE produto_id = :id";
+	MapSqlParameterSource source = new MapSqlParameterSource();
+	source.addValue("amount", stock.getAmount());
+	source.addValue("id", stock.getId());
+	jdbcTemplate.update(sql, source);
     }
 
     @Override
@@ -45,12 +49,6 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public List<Stock> findAll() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    public List<Stock> findByName(String name) {
 	// TODO Auto-generated method stub
 	return null;
     }

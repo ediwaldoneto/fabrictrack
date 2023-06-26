@@ -31,4 +31,6 @@ public interface ClientRepository {
     public boolean checkCpfExists(final String cpf);
 
     public boolean checkRgExists(final String rg);
+    
+    public Long checkClientExists(final Long id) throws ClientNotFoundException;
 }

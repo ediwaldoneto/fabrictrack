@@ -35,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> findName(String name) throws ClientNotFoundException  {
+    public List<Client> findName(String name) throws ClientNotFoundException {
 	return repositoryImpl.findByName(name);
     }
 
@@ -64,68 +64,67 @@ public class ClientServiceImpl implements ClientService {
 	return repositoryImpl.checkRgExists(rg);
     }
 
-    
     /**
      * @param cpf
      * @return
      */
     public boolean isValidCPF(final String cpf) {
-	    if (cpf == null || cpf.length() != 11) {
-	        return false;
-	    }
-
-	    if (areAllDigitsEqual(cpf)) {
-	        return false;
-	    }
-
-	    if (!isValidFirstDigit(cpf)) {
-	        return false;
-	    }
-
-	    if (!isValidSecondDigit(cpf)) {
-	        return false;
-	    }
-
-	    return true;
+	if (cpf == null || cpf.length() != 11) {
+	    return false;
 	}
 
-	private boolean areAllDigitsEqual(String cpf) {
-	    char firstDigit = cpf.charAt(0);
-	    for (int i = 1; i < cpf.length(); i++) {
-	        if (cpf.charAt(i) != firstDigit) {
-	            return false;
-	        }
-	    }
-	    return true;
+	if (areAllDigitsEqual(cpf)) {
+	    return false;
 	}
 
-	private boolean isValidFirstDigit(String cpf) {
-	    int firstDigit = Character.getNumericValue(cpf.charAt(9));
-	    int sum = 0;
-	    for (int i = 0; i < 9; i++) {
-	        sum += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
-	    }
-	    int remainder = sum % 11;
-	    if (remainder < 2) {
-	        return firstDigit == 0;
-	    } else {
-	        return firstDigit == 11 - remainder;
-	    }
+	if (!isValidFirstDigit(cpf)) {
+	    return false;
 	}
 
-	private boolean isValidSecondDigit(String cpf) {
-	    int secondDigit = Character.getNumericValue(cpf.charAt(10));
-	    int sum = 0;
-	    for (int i = 0; i < 10; i++) {
-	        sum += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
-	    }
-	    int remainder = sum % 11;
-	    if (remainder < 2) {
-	        return secondDigit == 0;
-	    } else {
-	        return secondDigit == 11 - remainder;
+	if (!isValidSecondDigit(cpf)) {
+	    return false;
+	}
+
+	return true;
+    }
+
+    private boolean areAllDigitsEqual(String cpf) {
+	char firstDigit = cpf.charAt(0);
+	for (int i = 1; i < cpf.length(); i++) {
+	    if (cpf.charAt(i) != firstDigit) {
+		return false;
 	    }
 	}
+	return true;
+    }
+
+    private boolean isValidFirstDigit(String cpf) {
+	int firstDigit = Character.getNumericValue(cpf.charAt(9));
+	int sum = 0;
+	for (int i = 0; i < 9; i++) {
+	    sum += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
+	}
+	int remainder = sum % 11;
+	if (remainder < 2) {
+	    return firstDigit == 0;
+	} else {
+	    return firstDigit == 11 - remainder;
+	}
+    }
+
+    private boolean isValidSecondDigit(String cpf) {
+	int secondDigit = Character.getNumericValue(cpf.charAt(10));
+	int sum = 0;
+	for (int i = 0; i < 10; i++) {
+	    sum += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
+	}
+	int remainder = sum % 11;
+	if (remainder < 2) {
+	    return secondDigit == 0;
+	} else {
+	    return secondDigit == 11 - remainder;
+	}
+    }
 
     /**
      * @param cpfData
@@ -148,6 +147,12 @@ public class ClientServiceImpl implements ClientService {
 	    throw new ValidateExceptionData("rg already registered");
 	}
 
+    }
+
+    @Override
+    public Long checkClientExists(Long id) throws ClientNotFoundException {
+	log.info("checking if the client exists in the database {}", id);
+	return repositoryImpl.checkClientExists(id);
     }
 
 }

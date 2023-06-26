@@ -21,5 +21,4 @@ public interface StockRepository {
 
     public List<Stock> findAll();
 
-    public List<Stock> findByName(final String name);
 }
