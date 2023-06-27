@@ -8,11 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.nt.fabrictrack.exception.ProductNotFoundException;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.repository.impl.ProductRepositoryImpl;
 import br.com.nt.fabrictrack.service.ProductService;
-import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -36,12 +34,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(Product product) {
-
+	repository.update(product);
     }
 
     @Override
     public void delete(Long id) {
-
+	repository.delete(id);
     }
 
     @Override

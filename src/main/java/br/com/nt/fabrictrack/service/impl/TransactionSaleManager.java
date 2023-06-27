@@ -3,18 +3,23 @@
  */
 package br.com.nt.fabrictrack.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.nt.fabrictrack.enumeration.TransactionType;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.exception.StockNotFoundException;
 import br.com.nt.fabrictrack.model.Order;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.model.Stock;
+import br.com.nt.fabrictrack.model.Transaction;
 import br.com.nt.fabrictrack.model.dto.SaleDTO;
 import br.com.nt.fabrictrack.model.dto.SaleItemsDTO;
 
@@ -23,7 +28,7 @@ import br.com.nt.fabrictrack.model.dto.SaleItemsDTO;
  *
  */
 @Service
-public class TransactionSalesManager {
+public class TransactionSaleManager {
 
     private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
 
@@ -69,6 +74,16 @@ public class TransactionSalesManager {
 		log.info("updating stock for the product {}", product.getName());
 		stock.setAmount(stock.getAmount() - saleItem.getAmount());
 		stockService.save(stock);
+
+		Transaction transaction = new Transaction();
+		transaction.setType(TransactionType.SALE.getType());
+		transaction.setTransactionDate(new Date());
+		transaction.setAmount(saleItem.getAmount());
+		transaction.setTransactionValue(
+			product.getProductValue().multiply(BigDecimal.valueOf(saleItem.getAmount())));
+		transaction.setIdProduct(product.getId());
+		transaction.setIdSale(idOrder);
+		
 	    }
 	}
 

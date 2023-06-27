@@ -21,7 +21,7 @@ public interface ProductRepository {
 
     public void delete(final Long id);
 
-    public void update(final Long id);
+    public void update(final Product product);
 
     public Long recoverSequence();
 }
