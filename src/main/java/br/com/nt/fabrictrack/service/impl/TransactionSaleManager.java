@@ -16,12 +16,14 @@ import br.com.nt.fabrictrack.enumeration.TransactionType;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.exception.StockNotFoundException;
+import br.com.nt.fabrictrack.model.Financial;
 import br.com.nt.fabrictrack.model.Order;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.model.Transaction;
 import br.com.nt.fabrictrack.model.dto.SaleDTO;
 import br.com.nt.fabrictrack.model.dto.SaleItemsDTO;
+import br.com.nt.fabrictrack.util.Constants;
 
 /**
  * @author Neto
@@ -46,6 +48,12 @@ public class TransactionSaleManager {
 
     @Autowired
     private StockServiceImpl stockService;
+    
+    @Autowired    
+    private TransactionServiceImpl transactionService;
+    
+    @Autowired
+    private FinancialServiceImpl financialService;
 
     /**
      * @param dto
@@ -70,21 +78,34 @@ public class TransactionSaleManager {
 	    Product product = productService.findById(saleItem.getIdProduct());
 	    Stock stock = stockService.findById(product.getId());
 
+	    // Verifique se há estoque disponível
 	    if (stock.getAmount() >= saleItem.getAmount()) {
 		log.info("updating stock for the product {}", product.getName());
+		// Atualiza o estoque
 		stock.setAmount(stock.getAmount() - saleItem.getAmount());
 		stockService.save(stock);
 
+		// Registra a transação de venda
 		Transaction transaction = new Transaction();
-		transaction.setType(TransactionType.SALE.getType());
+		transaction.setType(TransactionType.SALE.getType()); // VENDA
 		transaction.setTransactionDate(new Date());
 		transaction.setAmount(saleItem.getAmount());
 		transaction.setTransactionValue(
 			product.getProductValue().multiply(BigDecimal.valueOf(saleItem.getAmount())));
 		transaction.setIdProduct(product.getId());
 		transaction.setIdSale(idOrder); // Associando o ID da venda à transação
-		
-		
+		transactionService.save(transaction);
+
+		// Insire a transação no financeiro, associando o ID da venda
+		Financial financial = new Financial();
+		financial.setType(TransactionType.REVENUE.getType()); // RECEITA
+		financial.setTransactionDate(new Date());
+		financial.setTransactionValue(
+			product.getProductValue().multiply(BigDecimal.valueOf(saleItem.getAmount())));
+		financial.setDescription(Constants.MSG_DESCRIPTION_01);
+		financial.setIdSale(idOrder);
+		financialService.save(financial);
+
 	    }
 	}
 
