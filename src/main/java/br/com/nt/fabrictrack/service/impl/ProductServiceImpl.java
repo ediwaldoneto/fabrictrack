@@ -31,11 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-	try {
-	    return repository.findById(id);
-	} catch (Exception e) {
-	    throw new ProductNotFoundException(Constants.PRODUCT_NOT_FOUND);
-	}
+	return repository.findById(id);
     }
 
     @Override

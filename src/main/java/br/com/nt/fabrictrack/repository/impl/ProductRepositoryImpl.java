@@ -12,8 +12,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import br.com.nt.fabrictrack.exception.ProductNotFoundException;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.repository.ProductRepository;
+import br.com.nt.fabrictrack.util.Constants;
 import br.com.nt.fabrictrack.util.ObjectSqlParameterConverter;
 
 /**
@@ -31,7 +33,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 	final String sql = "SELECT * FROM produto WHERE id = :id";
 	MapSqlParameterSource source = new MapSqlParameterSource();
 	source.addValue("id", id);
-	return jdbcTemplate.queryForObject(sql, source, mapper());
+	try {
+	    return jdbcTemplate.queryForObject(sql, source, mapper());
+	} catch (Exception e) {
+	    throw new ProductNotFoundException(Constants.PRODUCT_NOT_FOUND);
+	}
     }
 
     @Override

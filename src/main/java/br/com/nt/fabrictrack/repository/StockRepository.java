@@ -5,6 +5,7 @@ package br.com.nt.fabrictrack.repository;
 
 import java.util.List;
 
+import br.com.nt.fabrictrack.exception.StockNotFoundException;
 import br.com.nt.fabrictrack.model.Stock;
 
 /**
@@ -17,7 +18,7 @@ public interface StockRepository {
 
     public void update(Stock stock);
 
-    public Stock findById(final Long id);
+    public Stock findById(final Long id) throws StockNotFoundException;
 
     public List<Stock> findAll();
 

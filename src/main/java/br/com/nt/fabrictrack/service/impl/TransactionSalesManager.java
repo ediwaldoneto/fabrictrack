@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
+import br.com.nt.fabrictrack.exception.StockNotFoundException;
 import br.com.nt.fabrictrack.model.Order;
+import br.com.nt.fabrictrack.model.Product;
+import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.model.dto.SaleDTO;
+import br.com.nt.fabrictrack.model.dto.SaleItemsDTO;
 
 /**
  * @author Neto
@@ -28,23 +32,45 @@ public class TransactionSalesManager {
 
     @Autowired
     private SellerServiceImpl sellerService;
-    
+
     @Autowired
     private OrderServiceImpl orderService;
+
+    @Autowired
+    private ProductServiceImpl productService;
+
+    @Autowired
+    private StockServiceImpl stockService;
 
     /**
      * @param dto
      * @throws ClientNotFoundException
      * @throws SellerNotFoundException
+     * @throws StockNotFoundException
      */
     @Transactional
-    public void registerSale(final SaleDTO dto) throws ClientNotFoundException, SellerNotFoundException {
+    public void registerSale(final SaleDTO dto)
+	    throws ClientNotFoundException, SellerNotFoundException, StockNotFoundException {
+
+	// Crie um novo pedido
 	Order order = new Order();
 	order.setIdClient(clientService.checkClientExists(dto.getIdClient()));
 	order.setIdSeller(sellerService.checkSellerExists(dto.getIdSeller()));
 	Long idOrder = orderService.save(order);
-	log.info("id order {}", idOrder);
-	
-	
+	log.info("created order number {}", idOrder);
+
+	// Percorra os produtos vendidos e atualize o estoque, registre as transações e
+	// insira no financeiro
+	for (SaleItemsDTO saleItem : dto.getItens()) {
+	    Product product = productService.findById(saleItem.getIdProduct());
+	    Stock stock = stockService.findById(product.getId());
+
+	    if (stock.getAmount() >= saleItem.getAmount()) {
+		log.info("updating stock for the product {}", product.getName());
+		stock.setAmount(stock.getAmount() - saleItem.getAmount());
+		stockService.save(stock);
+	    }
+	}
+
     }
 }

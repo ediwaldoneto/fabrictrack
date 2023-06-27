@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.nt.fabrictrack.exception.StockNotFoundException;
 import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.repository.impl.StockRepositoryImpl;
 import br.com.nt.fabrictrack.service.StockService;
@@ -29,9 +30,8 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public void finById(Long id) {
-	// TODO Auto-generated method stub
-
+    public Stock findById(Long id) throws StockNotFoundException {
+	return repository.findById(id);
     }
 
     @Override
