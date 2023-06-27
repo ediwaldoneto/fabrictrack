@@ -82,7 +82,8 @@ public class TransactionSaleManager {
 		transaction.setTransactionValue(
 			product.getProductValue().multiply(BigDecimal.valueOf(saleItem.getAmount())));
 		transaction.setIdProduct(product.getId());
-		transaction.setIdSale(idOrder);
+		transaction.setIdSale(idOrder); // Associando o ID da venda à transação
+		
 		
 	    }
 	}
