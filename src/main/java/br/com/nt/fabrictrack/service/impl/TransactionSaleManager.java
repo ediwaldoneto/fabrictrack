@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.nt.fabrictrack.enumeration.TransactionType;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
+import br.com.nt.fabrictrack.exception.InsufficientStockException;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.exception.StockNotFoundException;
 import br.com.nt.fabrictrack.model.Financial;
 import br.com.nt.fabrictrack.model.Order;
+import br.com.nt.fabrictrack.model.OrderItem;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.model.Transaction;
@@ -48,37 +50,41 @@ public class TransactionSaleManager {
 
     @Autowired
     private StockServiceImpl stockService;
-    
-    @Autowired    
+
+    @Autowired
     private TransactionServiceImpl transactionService;
-    
+
     @Autowired
     private FinancialServiceImpl financialService;
+
+    @Autowired
+    private OrderItemServiceImpl orderItemService;
 
     /**
      * @param dto
      * @throws ClientNotFoundException
      * @throws SellerNotFoundException
      * @throws StockNotFoundException
+     * @throws InsufficientStockException
      */
     @Transactional
-    public void registerSale(final SaleDTO dto)
-	    throws ClientNotFoundException, SellerNotFoundException, StockNotFoundException {
+    public void registerSale(final SaleDTO dto) throws ClientNotFoundException, SellerNotFoundException,
+	    StockNotFoundException, InsufficientStockException {
 
-	// Crie um novo pedido
+	// Cria um novo pedido
 	Order order = new Order();
 	order.setIdClient(clientService.checkClientExists(dto.getIdClient()));
 	order.setIdSeller(sellerService.checkSellerExists(dto.getIdSeller()));
 	Long idOrder = orderService.save(order);
 	log.info("created order number {}", idOrder);
 
-	// Percorra os produtos vendidos e atualize o estoque, registre as transações e
+	// Percorre os produtos vendidos e atualize o estoque, registre as transações e
 	// insira no financeiro
 	for (SaleItemsDTO saleItem : dto.getItens()) {
 	    Product product = productService.findById(saleItem.getIdProduct());
 	    Stock stock = stockService.findById(product.getId());
 
-	    // Verifique se há estoque disponível
+	    // Verifica se há estoque disponível
 	    if (stock.getAmount() >= saleItem.getAmount()) {
 		log.info("updating stock for the product {}", product.getName());
 		// Atualiza o estoque
@@ -106,6 +112,15 @@ public class TransactionSaleManager {
 		financial.setIdSale(idOrder);
 		financialService.save(financial);
 
+		// Cria um novo item de pedido e associe-o ao pedido atual
+		OrderItem orderItem = new OrderItem();
+		orderItem.setIdOrder(idOrder);
+		orderItem.setIdProduct(product.getId());
+		orderItem.setAmount(saleItem.getAmount());
+		orderItemService.save(orderItem);
+	    } else {
+		log.info("Estoque insuficiente para o produto: {} ", product.getName());
+		throw new InsufficientStockException("Estoque insuficiente para o produto: " + product.getName());
 	    }
 	}
 

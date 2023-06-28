@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import br.com.nt.fabrictrack.model.Financial;
-import br.com.nt.fabrictrack.repository.FinancialRepository;
+import br.com.nt.fabrictrack.model.OrderItem;
+import br.com.nt.fabrictrack.repository.OrderItemRepository;
 import br.com.nt.fabrictrack.util.ObjectSqlParameterConverter;
 
 /**
@@ -17,18 +17,16 @@ import br.com.nt.fabrictrack.util.ObjectSqlParameterConverter;
  *
  */
 @Repository
-public class FinancialRepositoryImpl implements FinancialRepository {
-
+public class OrderItemRepositoryImpl implements OrderItemRepository{
+    
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(Financial financial) {
-	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(financial);
-	final String sql = "INSERT INTO financeiro (tipo, data_transacao, valor, descricao, venda_id) "
-		+ " VALUES (:type,:transactionDate,:transactionValue,:description,:idSale)";
+    public void save(OrderItem orderItem) {
+	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(orderItem);
+	final String sql = "INSERT INTO item_pedido (pedido_id, produto_id, quantidade) VALUE (:idOrder, :idProduct, :amount)";
 	jdbcTemplate.update(sql, source);
-
     }
 
 }
