@@ -89,7 +89,7 @@ public class TransactionSaleManager {
 		log.info("updating stock for the product {}", product.getName());
 		// Atualiza o estoque
 		stock.setAmount(stock.getAmount() - saleItem.getAmount());
-		stockService.save(stock);
+		stockService.update(stock);
 
 		// Registra a transação de venda
 		Transaction transaction = new Transaction();

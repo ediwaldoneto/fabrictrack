@@ -32,7 +32,7 @@ public class TransactionSaleManagerController {
     private TransactionSaleManager transactionSaleManager;
 
     @PostMapping("/sale")
-    public ResponseEntity<Response<String>> realizaVenda(@RequestBody SaleDTO dto, BindingResult result) {
+    public ResponseEntity<Response<String>> registerSale(@RequestBody SaleDTO dto, BindingResult result) {
 
 	Response<String> response = new Response<>();
 

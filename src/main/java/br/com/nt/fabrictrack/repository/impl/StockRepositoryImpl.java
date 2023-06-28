@@ -37,10 +37,8 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public void update(Stock stock) {
-	final String sql = "UPDATE estoque SET quantidade = :amount WHERE produto_id = :id";
-	MapSqlParameterSource source = new MapSqlParameterSource();
-	source.addValue("amount", stock.getAmount());
-	source.addValue("id", stock.getId());
+	final String sql = "UPDATE estoque SET quantidade = :amount WHERE produto_id = :idProduct";
+	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(stock);
 	jdbcTemplate.update(sql, source);
     }
 
