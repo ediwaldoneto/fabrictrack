@@ -118,11 +118,15 @@ public class TransactionSaleManager {
 		orderItem.setIdProduct(product.getId());
 		orderItem.setAmount(saleItem.getAmount());
 		orderItemService.save(orderItem);
+		log.info("successful sale");
 	    } else {
-		log.info("Estoque insuficiente para o produto: {} ", product.getName());
-		throw new InsufficientStockException("Estoque insuficiente para o produto: " + product.getName());
+		log.info("Insufficient stock for the product: {} ", product.getName());
+		throw new InsufficientStockException("Insufficient stock for the product: " + product.getName());
 	    }
 	}
 
+    }
+
+    public void cancelSale() {
     }
 }
