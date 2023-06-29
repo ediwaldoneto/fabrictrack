@@ -38,7 +38,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 	Long nextSequence = lastSequence + 1;
 
-	String insertQuery = "INSERT INTO pedido (id, cliente_id, vendedor_id) VALUES (id, :idClient, :idSeller)";
+	String insertQuery = "INSERT INTO pedido (id, cliente_id, vendedor_id,data_pedido, motivo_cancelamento) VALUES "
+		+ " (id, :idClient, :idSeller, :orderDate, :cancellationReason)";
 	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(order);
 	source.addValue("id", nextSequence);
 	KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -47,6 +48,16 @@ public class OrderRepositoryImpl implements OrderRepository {
 	Long generatedId = keyHolder.getKey().longValue();
 
 	return generatedId;
+
+    }
+
+    @Override
+    public void update(Long id, String reason) {
+	final String sql = "UPDATE pedido SET cancelado = 1, motivo_cancelamento = :reason WHERE id = :id";
+	MapSqlParameterSource source = new MapSqlParameterSource();
+	source.addValue("id", id);
+	source.addValue("reason", reason);
+	jdbcTemplate.update(sql, source);
 
     }
 

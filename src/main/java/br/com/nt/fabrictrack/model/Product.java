@@ -4,6 +4,7 @@
 package br.com.nt.fabrictrack.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.modelmapper.ModelMapper;
 
@@ -24,6 +25,7 @@ public class Product {
     private String color;
     private String material;
     private BigDecimal productValue;
+    private Date dateRegister;
 
     /**
      * @return the id
@@ -147,5 +149,13 @@ public class Product {
 
     public ProductDTO convertEntity() {
 	return new ModelMapper().map(this, ProductDTO.class);
+    }
+
+    public Date getDateRegister() {
+	return dateRegister;
+    }
+
+    public void setDateRegister(Date dateRegister) {
+	this.dateRegister = dateRegister;
     }
 }

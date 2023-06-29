@@ -9,6 +9,7 @@ package br.com.nt.fabrictrack.model.dto;
  */
 public class SaleItemsDTO {
 
+    
     private Long idProduct;
     private int amount;
 

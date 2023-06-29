@@ -5,14 +5,23 @@ package br.com.nt.fabrictrack.model.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 /**
  * @author Neto
  *
  */
 public class SaleDTO {
 
+    @NotNull(message = "id client cannot be null")
+    @Positive(message = "id client cannot be negative")
     private Long idClient;
+    @NotNull(message = "id seller cannot be null")
+    @Positive(message = "id seller cannot be negative")
     private Long idSeller;
+    @NotEmpty(message = "item list cannot be empty")
     private List<SaleItemsDTO> itens;
 
     /**

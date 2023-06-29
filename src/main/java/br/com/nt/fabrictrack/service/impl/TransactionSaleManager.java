@@ -75,6 +75,7 @@ public class TransactionSaleManager {
 	Order order = new Order();
 	order.setIdClient(clientService.checkClientExists(dto.getIdClient()));
 	order.setIdSeller(sellerService.checkSellerExists(dto.getIdSeller()));
+	order.setOrderDate(new Date());
 	Long idOrder = orderService.save(order);
 	log.info("created order number {}", idOrder);
 
@@ -120,7 +121,7 @@ public class TransactionSaleManager {
 		orderItemService.save(orderItem);
 		log.info("successful sale");
 	    } else {
-		log.info("Insufficient stock for the product: {} ", product.getName());
+		orderService.update(idOrder, Constants.MSG_DESCRIPTION_02 + product.getId());
 		throw new InsufficientStockException("Insufficient stock for the product: " + product.getName());
 	    }
 	}

@@ -3,6 +3,8 @@
  */
 package br.com.nt.fabrictrack.controller.v1;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class TransactionSaleManagerController {
     private TransactionSaleManager transactionSaleManager;
 
     @PostMapping("/sale")
-    public ResponseEntity<Response<String>> registerSale(@RequestBody SaleDTO dto, BindingResult result) {
+    public ResponseEntity<Response<String>> registerSale(@Valid @RequestBody SaleDTO dto, BindingResult result) {
 
 	Response<String> response = new Response<>();
 

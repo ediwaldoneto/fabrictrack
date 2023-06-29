@@ -25,4 +25,10 @@ public class OrderServiceImpl implements OrderService {
 	return repository.save(order);
     }
 
+    @Override
+    public void update(final Long id, final String reason) {
+	repository.update(id, reason);
+	
+    }
+
 }

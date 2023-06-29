@@ -3,6 +3,7 @@
  */
 package br.com.nt.fabrictrack.repository.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,11 +49,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Long save(Product product) {
-	final String sql = " INSERT INTO produto (id, nome, descricao, marca, categoria, tamanho, cor, material, valor) "
-		+ " VALUES (:id, :name, :description, :brand, :category, :size, :color, :material, :productValue)";
+	final String sql = " INSERT INTO produto (id, nome, descricao, marca, categoria, tamanho, cor, material, valor,data_cadastro) "
+		+ " VALUES (:id, :name, :description, :brand, :category, :size, :color, :material, :productValue,:dateRegister)";
 	final Long id = recoverSequence();
 	MapSqlParameterSource source = ObjectSqlParameterConverter.convert(product);
 	source.addValue("id", id);
+	source.addValue("dateRegister", new Date());
 	jdbcTemplate.update(sql, source);
 	return id;
 
@@ -80,6 +82,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 	    product.setMaterial(rs.getString("material"));
 	    product.setSize(rs.getInt("tamanho"));
 	    product.setProductValue(rs.getBigDecimal("valor"));
+	    product.setDateRegister(rs.getDate("data_cadastro"));
 	    return product;
 	};
     }

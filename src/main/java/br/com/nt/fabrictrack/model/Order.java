@@ -3,6 +3,8 @@
  */
 package br.com.nt.fabrictrack.model;
 
+import java.util.Date;
+
 /**
  * @author Neto
  *
@@ -13,6 +15,8 @@ public class Order {
     private Long idClient;
     private Long idSeller;
     private boolean canceled;
+    private Date orderDate;
+    private String cancellationReason;
 
     /**
      * @return the id
@@ -68,6 +72,22 @@ public class Order {
      */
     public void setCanceled(boolean canceled) {
 	this.canceled = canceled;
+    }
+
+    public Date getOrderDate() {
+	return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+	this.orderDate = orderDate;
+    }
+
+    public String getCancellationReason() {
+	return cancellationReason;
+    }
+
+    public void setCancellationReason(String cancellationReason) {
+	this.cancellationReason = cancellationReason;
     }
 
 }
