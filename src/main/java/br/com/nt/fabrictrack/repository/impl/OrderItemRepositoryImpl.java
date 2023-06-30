@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.nt.fabrictrack.model.OrderItem;
 import br.com.nt.fabrictrack.repository.OrderItemRepository;
+import br.com.nt.fabrictrack.util.Constants;
 import br.com.nt.fabrictrack.util.ObjectSqlParameterConverter;
 
 /**
@@ -28,5 +29,6 @@ public class OrderItemRepositoryImpl implements OrderItemRepository{
 	final String sql = "INSERT INTO item_pedido (pedido_id, produto_id, quantidade) VALUE (:idOrder, :idProduct, :amount)";
 	jdbcTemplate.update(sql, source);
     }
+
 
 }

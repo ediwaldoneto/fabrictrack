@@ -14,5 +14,7 @@ public interface OrderRepository {
     public Long save(final Order order);
 
     public void update(final Long id, final String reason);
+    
+    public boolean checkOrderExists(final Long id);
 
 }

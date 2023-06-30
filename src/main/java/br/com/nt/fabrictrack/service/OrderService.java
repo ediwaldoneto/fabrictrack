@@ -14,4 +14,6 @@ public interface OrderService {
     public Long save(final Order order);
 
     public void update(final Long id, final String reason);
+    
+    public boolean checkOrderExists(final Long id);
 }

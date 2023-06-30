@@ -11,5 +11,6 @@ import br.com.nt.fabrictrack.model.OrderItem;
  */
 public interface OrderItemRepository {
 
-    public void save(OrderItem orderItem);
+    public void save(final OrderItem orderItem);
+    
 }

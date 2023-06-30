@@ -23,6 +23,7 @@ import br.com.nt.fabrictrack.model.OrderItem;
 import br.com.nt.fabrictrack.model.Product;
 import br.com.nt.fabrictrack.model.Stock;
 import br.com.nt.fabrictrack.model.Transaction;
+import br.com.nt.fabrictrack.model.dto.CancelSaleDTO;
 import br.com.nt.fabrictrack.model.dto.SaleDTO;
 import br.com.nt.fabrictrack.model.dto.SaleItemsDTO;
 import br.com.nt.fabrictrack.util.Constants;
@@ -128,6 +129,12 @@ public class TransactionSaleManager {
 
     }
 
-    public void cancelSale() {
+    public void cancelSale(final CancelSaleDTO dto) {
+	log.info("cancelando venda id {}", dto.getOrder());
+	if (orderService.checkOrderExists(dto.getOrder())) {
+	    orderService.update(dto.getOrder(), dto.getReason());
+	    
+	    
+	}
     }
 }

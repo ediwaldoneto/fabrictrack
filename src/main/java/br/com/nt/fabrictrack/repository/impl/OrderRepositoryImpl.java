@@ -61,4 +61,12 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     }
 
+    @Override
+    public boolean checkOrderExists(Long id) {
+	final String sql = " SELECT COUNT(*) FROM pedido WHERE id = :id ";
+	MapSqlParameterSource source = new MapSqlParameterSource();
+	source.addValue("id", id);
+	return jdbcTemplate.queryForObject(sql, source, Integer.class) > 0;
+    }
+
 }

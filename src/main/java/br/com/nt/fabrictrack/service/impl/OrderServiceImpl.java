@@ -31,4 +31,11 @@ public class OrderServiceImpl implements OrderService {
 	
     }
 
+    @Override
+    public boolean checkOrderExists(Long id) {
+	return repository.checkOrderExists(id);
+	
+	
+    }
+
 }
