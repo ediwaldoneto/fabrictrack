@@ -31,4 +31,13 @@ public class FinancialRepositoryImpl implements FinancialRepository {
 
     }
 
+    @Override
+    public void delete(Long id) {
+	MapSqlParameterSource source = new MapSqlParameterSource();
+	source.addValue("id", id);
+	final String sql = "DELETE financeiro WHERE venda_id = :id";
+	jdbcTemplate.update(sql, source);
+	
+    }
+
 }

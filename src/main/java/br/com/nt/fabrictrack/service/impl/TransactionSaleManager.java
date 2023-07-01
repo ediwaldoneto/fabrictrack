@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 import br.com.nt.fabrictrack.enumeration.TransactionType;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.InsufficientStockException;
@@ -73,6 +75,7 @@ public class TransactionSaleManager {
     public void registerSale(final SaleDTO dto) throws ClientNotFoundException, SellerNotFoundException,
 	    StockNotFoundException, InsufficientStockException {
 
+	// verificando se nenhum item foi vendido com quantidade igual a zero
 	dto.getItens().stream().filter(t -> t.getAmount() == 0).findFirst().ifPresent(t -> {
 	    throw new ValidateExceptionData("item quantity cannot be zero");
 	});
@@ -127,6 +130,7 @@ public class TransactionSaleManager {
 		orderItemService.save(orderItem);
 		log.info("successful sale");
 	    } else {
+		// cancelando venda/pedido pela falta de produto no estoque
 		orderService.update(idOrder, Constants.MSG_DESCRIPTION_02 + product.getId());
 		throw new InsufficientStockException("Insufficient stock for the product: " + product.getName());
 	    }
@@ -135,10 +139,17 @@ public class TransactionSaleManager {
     }
 
     public void cancelSale(final CancelSaleDTO dto) {
-	log.info("cancelando venda id {}", dto.getOrder());
+	log.info("canceling sale id {}", dto.getOrder());
+	// verificando ser existe a venda/pedido
 	if (orderService.checkOrderExists(dto.getOrder())) {
+	    // cancelando o pedido
 	    orderService.update(dto.getOrder(), dto.getReason());
-
+	    // cancelando a transacao de venda
+	    transactionService.updateTransactionCanceled(dto.getOrder());
+	    // deleta a transacao do financeiro
+	    financialService.delete(dto.getOrder());
+	} else {
+	    throw new ValidateExceptionData("sale not found for order: " + dto.getOrder());
 	}
     }
 }

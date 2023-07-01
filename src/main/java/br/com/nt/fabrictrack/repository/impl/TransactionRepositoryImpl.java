@@ -43,4 +43,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 	return null;
     }
 
+    @Override
+    public void updateTransactionCanceled(Long id) {
+	MapSqlParameterSource source = new MapSqlParameterSource();
+	source.addValue("id", id);
+	final String sql = "UPDATE transacao SET cancelado = 1 WHERE id = :id";
+	jdbcTemplate.update(sql, source);
+
+    }
+
 }

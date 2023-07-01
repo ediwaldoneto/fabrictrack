@@ -26,4 +26,12 @@ public class FinancialServiceImpl  implements FinancialService{
 	
     }
 
+    @Override
+    public void delete(Long id) {
+	repository.delete(id);
+	
+    }
+    
+    
+
 }

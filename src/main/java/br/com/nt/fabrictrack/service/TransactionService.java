@@ -12,4 +12,6 @@ import br.com.nt.fabrictrack.model.Transaction;
 public interface TransactionService {
 
     public void save(Transaction transaction);
+
+    public void updateTransactionCanceled(final Long id);
 }

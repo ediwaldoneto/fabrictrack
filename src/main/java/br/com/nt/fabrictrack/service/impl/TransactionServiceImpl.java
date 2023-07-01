@@ -26,4 +26,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    public void updateTransactionCanceled(Long id) {
+	repository.updateTransactionCanceled(id);
+	
+    }
+
 }
