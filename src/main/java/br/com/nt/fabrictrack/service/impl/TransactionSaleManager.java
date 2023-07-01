@@ -17,6 +17,7 @@ import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.InsufficientStockException;
 import br.com.nt.fabrictrack.exception.SellerNotFoundException;
 import br.com.nt.fabrictrack.exception.StockNotFoundException;
+import br.com.nt.fabrictrack.exception.ValidateExceptionData;
 import br.com.nt.fabrictrack.model.Financial;
 import br.com.nt.fabrictrack.model.Order;
 import br.com.nt.fabrictrack.model.OrderItem;
@@ -71,6 +72,10 @@ public class TransactionSaleManager {
     @Transactional
     public void registerSale(final SaleDTO dto) throws ClientNotFoundException, SellerNotFoundException,
 	    StockNotFoundException, InsufficientStockException {
+
+	dto.getItens().stream().filter(t -> t.getAmount() == 0).findFirst().ifPresent(t -> {
+	    throw new ValidateExceptionData("item quantity cannot be zero");
+	});
 
 	// Cria um novo pedido
 	Order order = new Order();
@@ -133,8 +138,7 @@ public class TransactionSaleManager {
 	log.info("cancelando venda id {}", dto.getOrder());
 	if (orderService.checkOrderExists(dto.getOrder())) {
 	    orderService.update(dto.getOrder(), dto.getReason());
-	    
-	    
+
 	}
     }
 }
