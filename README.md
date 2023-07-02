@@ -35,10 +35,19 @@ No arquivo `application.yml`, localizado em `src/main/resources`, você precisa 
 
 ```yaml
 spring:
-  datasource:
+    application:
+       name: fabric
+    profiles:
+       active: local,default
+datasource:
     url: jdbc:mysql://localhost:3306/fabric
-    username: seu_usuario
-    password: sua_senha
+    driver_class_name: com.mysql.cj.jdbc.Driver
+    pool_name: fabric
+    connection_timeout: 60000
+    max_pool_size: 3
+datasource_username: 'root'
+datasource_password: 'root'
+
  
  ```
   - Certifique-se de substituir seu_usuario pelo seu nome de usuário do MySQL e sua_senha pela sua senha do MySQL.
