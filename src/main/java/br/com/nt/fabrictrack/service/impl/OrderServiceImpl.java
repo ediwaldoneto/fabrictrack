@@ -28,14 +28,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void update(final Long id, final String reason) {
 	repository.update(id, reason);
-	
     }
 
     @Override
     public boolean checkOrderExists(Long id) {
 	return repository.checkOrderExists(id);
-	
-	
     }
 
 }

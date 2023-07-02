@@ -68,10 +68,11 @@ public class TransactionSaleManagerController {
 
 	try {
 	    transactionSaleManager.cancelSale(dto);
-	    return ResponseEntity.status(HttpStatus.OK).build();
+	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	} catch (Exception e) {
-	    log.info(e.getMessage());
-	    return null;
+	    log.error(e.getMessage());
+	    response.addErrorMsgResponse(e.getMessage());
+	    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 
     }
