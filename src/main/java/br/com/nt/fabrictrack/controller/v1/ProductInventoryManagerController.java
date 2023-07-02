@@ -40,7 +40,7 @@ public class ProductInventoryManagerController {
 
     private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
 
-    @PostMapping
+    @PostMapping("/product")
     public ResponseEntity<Response<ProductStockDTO>> create(@Valid @RequestBody ProductStockDTO dto, BindingResult result) {
 
 	Response<ProductStockDTO> response = new Response<>();
