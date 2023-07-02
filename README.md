@@ -39,5 +39,14 @@ spring:
     url: jdbc:mysql://localhost:3306/fabric
     username: seu_usuario
     password: sua_senha
+ 
+ ```
+  - Certifique-se de substituir seu_usuario pelo seu nome de usuário do MySQL e sua_senha pela sua senha do MySQL.
 
-Certifique-se de substituir seu_usuario pelo seu nome de usuário do MySQL e sua_senha pela sua senha do MySQL.
+## Executando o projeto
+Após configurar corretamente o projeto, você pode executá-lo usando sua IDE ou pelo terminal. Para executar o projeto pelo terminal, navegue até o diretório raiz do projeto e execute o seguinte comando:
+
+```
+mvn spring-boot:run
+```
+
