@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.nt.fabrictrack.model.dto.CancelSaleDTO;
 import br.com.nt.fabrictrack.model.dto.SaleDTO;
 import br.com.nt.fabrictrack.model.dto.response.Response;
 import br.com.nt.fabrictrack.service.impl.TransactionSaleManager;
@@ -34,9 +35,9 @@ public class TransactionSaleManagerController {
     private TransactionSaleManager transactionSaleManager;
 
     @PostMapping("/sale")
-    public ResponseEntity<Response<String>> registerSale(@Valid @RequestBody SaleDTO dto, BindingResult result) {
+    public ResponseEntity<Response<SaleDTO>> registerSale(@Valid @RequestBody SaleDTO dto, BindingResult result) {
 
-	Response<String> response = new Response<>();
+	Response<SaleDTO> response = new Response<>();
 
 	if (result.hasErrors()) {
 	    result.getAllErrors().forEach(error -> response.addErrorMsgResponse(error.getDefaultMessage()));
@@ -50,6 +51,27 @@ public class TransactionSaleManagerController {
 	    log.error(e.getMessage());
 	    response.addErrorMsgResponse(e.getMessage());
 	    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	}
+
+    }
+
+    @PostMapping("/sale/cancel")
+    public ResponseEntity<Response<CancelSaleDTO>> cancelSale(@Valid @RequestBody CancelSaleDTO dto,
+	    BindingResult result) {
+
+	Response<CancelSaleDTO> response = new Response<>();
+
+	if (result.hasErrors()) {
+	    result.getAllErrors().forEach(error -> response.addErrorMsgResponse(error.getDefaultMessage()));
+	    return ResponseEntity.badRequest().body(response);
+	}
+
+	try {
+	    transactionSaleManager.cancelSale(dto);
+	    return ResponseEntity.status(HttpStatus.OK).build();
+	} catch (Exception e) {
+	    log.info(e.getMessage());
+	    return null;
 	}
 
     }

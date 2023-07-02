@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
 import br.com.nt.fabrictrack.enumeration.TransactionType;
 import br.com.nt.fabrictrack.exception.ClientNotFoundException;
 import br.com.nt.fabrictrack.exception.InsufficientStockException;
@@ -138,6 +136,9 @@ public class TransactionSaleManager {
 
     }
 
+    /**
+     * @param dto
+     */
     public void cancelSale(final CancelSaleDTO dto) {
 	log.info("canceling sale id {}", dto.getOrder());
 	// verificando ser existe a venda/pedido
@@ -148,6 +149,7 @@ public class TransactionSaleManager {
 	    transactionService.updateTransactionCanceled(dto.getOrder());
 	    // deleta a transacao do financeiro
 	    financialService.delete(dto.getOrder());
+	    log.info("sale canceled successfully");
 	} else {
 	    throw new ValidateExceptionData("sale not found for order: " + dto.getOrder());
 	}

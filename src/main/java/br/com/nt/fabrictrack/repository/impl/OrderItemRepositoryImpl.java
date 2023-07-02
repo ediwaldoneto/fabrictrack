@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import br.com.nt.fabrictrack.model.OrderItem;
 import br.com.nt.fabrictrack.repository.OrderItemRepository;
-import br.com.nt.fabrictrack.util.Constants;
 import br.com.nt.fabrictrack.util.ObjectSqlParameterConverter;
 
 /**
