@@ -2,14 +2,15 @@
 
 # Sistema de Vendas
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/seu-usuario/nome-do-repositorio/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/seu-usuario/nome-do-repositorio)](https://github.com/seu-usuario/nome-do-repositorio/stargazers)
+![GitHub last commit](https://img.shields.io/github/last-commit/ediwaldoneto/fabrictrack)
+![GitHub language count](https://img.shields.io/github/languages/count/ediwaldoneto/fabrictrack) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ediwaldoneto/fabrictrack) ![GitHub repo size](https://img.shields.io/github/repo-size/ediwaldoneto/fabrictrack)
+ 
 
 Este é um sistema de vendas, desenvolvido utilizando Spring Boot e MySQL. O sistema permite gerenciar o estoque, realizar vendas, registrar transações financeiras e gerar relatórios.
 
 ## Status de Desenvolvimento
 
-<p align="center">
+<p align="left">
 <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
 </p>
 
@@ -59,3 +60,10 @@ Após configurar corretamente o projeto, você pode executá-lo usando sua IDE o
 mvn spring-boot:run
 ```
 
+### Documentation
+
+* Swagger : [http://localhost:8080/swagger-ui/index.htm(http://localhost:8080/swagger-ui/index.html)
+
+### License
+
+This API is licensed under the MIT License.
