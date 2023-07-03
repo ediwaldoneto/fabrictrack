@@ -36,9 +36,6 @@ public class ProductStockDTO {
     private String material;
     @NotNull(message = "productValue cannot be null")
     private BigDecimal productValue;
-
-    private Long idStock;
-    private Long idProduct;
     @NotNull(message = "amount cannot be null")
     private int amount;
     private Date dateRegister;
@@ -169,34 +166,6 @@ public class ProductStockDTO {
      */
     public void setProductValue(BigDecimal productValue) {
 	this.productValue = productValue;
-    }
-
-    /**
-     * @return the idStock
-     */
-    public Long getIdStock() {
-	return idStock;
-    }
-
-    /**
-     * @param idStock the idStock to set
-     */
-    public void setIdStock(Long idStock) {
-	this.idStock = idStock;
-    }
-
-    /**
-     * @return the idProduct
-     */
-    public Long getIdProduct() {
-	return idProduct;
-    }
-
-    /**
-     * @param idProduct the idProduct to set
-     */
-    public void setIdProduct(Long idProduct) {
-	this.idProduct = idProduct;
     }
 
     /**

@@ -25,6 +25,7 @@ public class Product {
     private String color;
     private String material;
     private BigDecimal productValue;
+    private String stockLocation;
     private Date dateRegister;
 
     /**
@@ -157,5 +158,13 @@ public class Product {
 
     public void setDateRegister(Date dateRegister) {
 	this.dateRegister = dateRegister;
+    }
+
+    public String getStockLocation() {
+	return stockLocation;
+    }
+
+    public void setStockLocation(String stockLocation) {
+	this.stockLocation = stockLocation;
     }
 }

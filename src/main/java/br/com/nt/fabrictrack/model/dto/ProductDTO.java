@@ -4,6 +4,7 @@
 package br.com.nt.fabrictrack.model.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,6 +37,7 @@ public class ProductDTO {
     private BigDecimal productValue;
     @NotBlank(message = "stockLocation cannot be null")
     private String stockLocation;
+    private Date dateRegister;
 
     /**
      * @return the stockLocation
@@ -179,5 +181,13 @@ public class ProductDTO {
 
     public Product convertEntity() {
 	return new ModelMapper().map(this, Product.class);
+    }
+
+    public Date getDateRegister() {
+	return dateRegister;
+    }
+
+    public void setDateRegister(Date dateRegister) {
+	this.dateRegister = dateRegister;
     }
 }
