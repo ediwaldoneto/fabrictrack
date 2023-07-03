@@ -31,7 +31,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findById(Long id) {
-	final String sql = "SELECT * FROM produto WHERE id = :id";
+	final String sql = " SELECT p.id, p.nome, p.descricao, p.marca,p.categoria,p.tamanho,p.cor,p.material,p.valor,p.data_cadastro,e.quantidade,e.local_estoque "
+		+ " FROM produto p INNER JOIN estoque e ON p.id = e.produto_id WHERE p.id = :id";
 	MapSqlParameterSource source = new MapSqlParameterSource();
 	source.addValue("id", id);
 	try {
@@ -43,7 +44,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-	final String sql = "SELECT * FROM produto";
+	final String sql = " SELECT p.id, p.nome, p.descricao, p.marca,p.categoria,p.tamanho,p.cor,p.material,p.valor,p.data_cadastro,e.quantidade,e.local_estoque "
+		+ " FROM produto p INNER JOIN estoque e ON p.id = e.produto_id ";
 	return jdbcTemplate.query(sql, mapper());
     }
 
@@ -83,6 +85,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 	    product.setSize(rs.getInt("tamanho"));
 	    product.setProductValue(rs.getBigDecimal("valor"));
 	    product.setDateRegister(rs.getDate("data_cadastro"));
+	    product.setStockLocation(rs.getString("local_estoque"));
 	    return product;
 	};
     }
