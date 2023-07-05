@@ -6,6 +6,7 @@ package br.com.nt.fabrictrack.model.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 import org.modelmapper.ModelMapper;
 
@@ -18,6 +19,7 @@ import br.com.nt.fabrictrack.model.Seller;
 public class SellerDTO {
 
     @NotNull(message = "choose a code for the seller and inform")
+    @Positive(message = "this is a personalized id for the seller, please enter a code of your choice and it must be greater than zero")
     private Long id;
     @NotBlank(message = "full username is required")
     @Pattern(regexp = "^[a-zA-Z]+\\.[a-zA-Z]+$", message = " the username must be in the format 'name.surname'")
