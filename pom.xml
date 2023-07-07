@@ -11,9 +11,9 @@
 	</parent>
 	<groupId>br.com.nt</groupId>
 	<artifactId>fabrictrack</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>fabrictrack</name>
-	<description>Demo project for Spring Boot</description>
+	<description>FabricTrack Project</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
