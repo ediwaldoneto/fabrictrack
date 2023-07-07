@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `estoque` (
   PRIMARY KEY (`id`),
   KEY `produto_id` (`produto_id`),
   CONSTRAINT `estoque_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `financeiro` (
   PRIMARY KEY (`id`),
   KEY `venda_id` (`venda_id`),
   CONSTRAINT `financeiro_ibfk_1` FOREIGN KEY (`venda_id`) REFERENCES `pedido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `item_pedido` (
   KEY `produto_id` (`produto_id`),
   CONSTRAINT `item_pedido_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedido` (`id`),
   CONSTRAINT `item_pedido_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   KEY `vendedor_id` (`vendedor_id`),
   CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`vendedor_id`) REFERENCES `vendedor` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=873 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=875 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `data_cadastro` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nome` (`nome`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `transacao` (
   KEY `venda_id` (`venda_id`),
   CONSTRAINT `transacao_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produto` (`id`),
   CONSTRAINT `transacao_ibfk_2` FOREIGN KEY (`venda_id`) REFERENCES `pedido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `vendedor` (
   `user_name` varchar(50) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
