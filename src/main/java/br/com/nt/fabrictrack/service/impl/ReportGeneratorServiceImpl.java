@@ -12,6 +12,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +30,18 @@ public class ReportGeneratorServiceImpl implements ReportGeneratorService {
     @Autowired
     private ReportGeneratorRepositoryImpl repository;
 
+    private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
+
     @Override
     public void bestSellingItemsBySeller(HttpServletResponse response) throws IOException {
 
 	List<BestSellingItemsBySeller> list = repository.bestSellingItemsBySeller();
 
+	if (list.isEmpty()) {
+	        response.setContentType("text/plain");
+	        response.getWriter().write("no data available.");
+	        return;
+	    }
 	Workbook workbook = new XSSFWorkbook();
 
 	Sheet sheet = workbook.createSheet("Itens Mais Vendidos por Vendedor");
@@ -53,8 +62,13 @@ public class ReportGeneratorServiceImpl implements ReportGeneratorService {
 	response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 	response.setHeader("Content-Disposition", "attachment; filename=Itens Mais Vendidos por Vendedor.xlsx");
 
-	workbook.write(response.getOutputStream());
-	workbook.close();
+	try {
+	    workbook.write(response.getOutputStream());
+	} catch (IOException e) {
+	    log.info("an error occurred while generating report -> {}", e.getMessage());
+	} finally {
+	    workbook.close();
+	}
     }
 
 }
