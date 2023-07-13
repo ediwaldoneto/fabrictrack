@@ -38,10 +38,10 @@ public class ReportGeneratorServiceImpl implements ReportGeneratorService {
 	List<BestSellingItemsBySeller> list = repository.bestSellingItemsBySeller();
 
 	if (list.isEmpty()) {
-	        response.setContentType("text/plain");
-	        response.getWriter().write("no data available.");
-	        return;
-	    }
+	    response.setContentType("text/plain");
+	    response.getWriter().write(" -> no data available. ");
+	    return;
+	}
 	Workbook workbook = new XSSFWorkbook();
 
 	Sheet sheet = workbook.createSheet("Itens Mais Vendidos por Vendedor");
