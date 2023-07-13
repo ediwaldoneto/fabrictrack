@@ -46,8 +46,8 @@ datasource:
     pool_name: fabric
     connection_timeout: 60000
     max_pool_size: 3
-datasource_username: 'seu_username'
-datasource_password: 'seu_password'
+    datasource_username: 'seu_username'
+    datasource_password: 'seu_password'
 
  
  ```
