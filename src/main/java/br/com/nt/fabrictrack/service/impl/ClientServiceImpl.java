@@ -24,135 +24,101 @@ import br.com.nt.fabrictrack.service.ClientService;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    @Autowired
-    private ClientRepositoryImpl repositoryImpl;
+	@Autowired
+	private ClientRepositoryImpl repositoryImpl;
 
-    private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
+	private static final Logger log = LoggerFactory.getLogger("ServiceInformation");
 
-    @Override
-    public Client findByCpfRg(String cpf, String rg) throws ClientNotFoundException {
-	return repositoryImpl.findByCpfRg(cpf, rg);
-    }
-
-    @Override
-    public List<Client> findName(String name) throws ClientNotFoundException {
-	return repositoryImpl.findByName(name);
-    }
-
-    @Override
-    public void save(Client client) {
-	repositoryImpl.save(client);
-    }
-
-    @Override
-    public List<Client> findAll() {
-	List<Client> clients = repositoryImpl.findAll();
-	if (clients == null) {
-	    return Collections.emptyList();
+	@Override
+	public Client findByCpfRg(String cpf, String rg) throws ClientNotFoundException {
+		return repositoryImpl.findByCpfRg(cpf, rg);
 	}
 
-	return clients;
-    }
-
-    @Override
-    public boolean checkCpfExists(String cpf) {
-	return repositoryImpl.checkCpfExists(cpf);
-    }
-
-    @Override
-    public boolean checkRgExists(String rg) {
-	return repositoryImpl.checkRgExists(rg);
-    }
-
-    /**
-     * @param cpf
-     * @return
-     */
-    public boolean isValidCPF(final String cpf) {
-	if (cpf == null || cpf.length() != 11) {
-	    return false;
+	@Override
+	public List<Client> findName(String name) throws ClientNotFoundException {
+		return repositoryImpl.findByName(name);
 	}
 
-	if (areAllDigitsEqual(cpf)) {
-	    return false;
+	@Override
+	public void save(Client client) {
+		repositoryImpl.save(client);
 	}
 
-	if (!isValidFirstDigit(cpf)) {
-	    return false;
+	@Override
+	public List<Client> findAll() {
+		List<Client> clients = repositoryImpl.findAll();
+		if (clients == null) {
+			return Collections.emptyList();
+		}
+
+		return clients;
 	}
 
-	if (!isValidSecondDigit(cpf)) {
-	    return false;
+	@Override
+	public boolean checkCpfExists(String cpf) {
+		return repositoryImpl.checkCpfExists(cpf);
 	}
 
-	return true;
-    }
-
-    private boolean areAllDigitsEqual(String cpf) {
-	char firstDigit = cpf.charAt(0);
-	for (int i = 1; i < cpf.length(); i++) {
-	    if (cpf.charAt(i) != firstDigit) {
-		return false;
-	    }
-	}
-	return true;
-    }
-
-    private boolean isValidFirstDigit(String cpf) {
-	int firstDigit = Character.getNumericValue(cpf.charAt(9));
-	int sum = 0;
-	for (int i = 0; i < 9; i++) {
-	    sum += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
-	}
-	int remainder = sum % 11;
-	if (remainder < 2) {
-	    return firstDigit == 0;
-	} else {
-	    return firstDigit == 11 - remainder;
-	}
-    }
-
-    private boolean isValidSecondDigit(String cpf) {
-	int secondDigit = Character.getNumericValue(cpf.charAt(10));
-	int sum = 0;
-	for (int i = 0; i < 10; i++) {
-	    sum += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
-	}
-	int remainder = sum % 11;
-	if (remainder < 2) {
-	    return secondDigit == 0;
-	} else {
-	    return secondDigit == 11 - remainder;
-	}
-    }
-
-    /**
-     * @param cpfData
-     * @param rgData
-     */
-    public void checksInformedData(final String cpfData, final String rgData) {
-
-	if (!isValidCPF(cpfData)) {
-	    log.info("invalid cpf {}", cpfData);
-	    throw new ValidateExceptionData("invalid cpf");
+	@Override
+	public boolean checkRgExists(String rg) {
+		return repositoryImpl.checkRgExists(rg);
 	}
 
-	if (checkCpfExists(cpfData)) {
-	    log.info("cpf already registered {}", cpfData);
-	    throw new ValidateExceptionData("cpf already registered");
+	/**
+	 * @param cpf
+	 * @return
+	 */
+	public boolean isValidCPF(final String cpf) {
+		if (cpf == null || cpf.length() != 11) {
+			return false;
+		}
+
+		int sum = 0;
+		for (int i = 0; i < 9; i++) {
+			sum += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
+		}
+		int firstDigit = sum % 11;
+		int expectedFirstDigit = firstDigit < 2 ? 0 : 11 - firstDigit;
+		if (Character.getNumericValue(cpf.charAt(9)) != expectedFirstDigit) {
+			return false;
+		}
+
+		sum = 0;
+		for (int i = 0; i < 10; i++) {
+			sum += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
+		}
+		int secondDigit = sum % 11;
+		int expectedSecondDigit = secondDigit < 2 ? 0 : 11 - secondDigit;
+		return Character.getNumericValue(cpf.charAt(10)) == expectedSecondDigit;
 	}
 
-	if (checkRgExists(rgData)) {
-	    log.info("rg already registered {}", rgData);
-	    throw new ValidateExceptionData("rg already registered");
+	/**
+	 * @param cpfData
+	 * @param rgData
+	 */
+	public void checksInformedData(final String cpfData, final String rgData) {
+
+		if (!isValidCPF(cpfData)) {
+			log.info("invalid cpf {}", cpfData);
+			throw new ValidateExceptionData("invalid cpf");
+		}
+
+		if (checkCpfExists(cpfData)) {
+			log.info("cpf already registered {}", cpfData);
+			throw new ValidateExceptionData("cpf already registered");
+		}
+
+		if (checkRgExists(rgData)) {
+			log.info("rg already registered {}", rgData);
+			throw new ValidateExceptionData("rg already registered");
+		}
+
 	}
 
-    }
-
-    @Override
-    public Long checkClientExists(Long id) throws ClientNotFoundException {
-	log.info("checking if the client exists in the database {}", id);
-	return repositoryImpl.checkClientExists(id);
-    }
+	@Override
+	public Long checkClientExists(Long id) throws ClientNotFoundException {
+		log.info("checking if the client exists in the database {}", id);
+		return repositoryImpl.checkClientExists(id);
+	}
 
 }
